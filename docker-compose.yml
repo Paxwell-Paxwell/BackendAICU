@@ -1,0 +1,52 @@
+version: '3.9'
+
+# Network
+networks:
+  server_network:
+    name: server_network
+    driver: bridge
+
+# Services
+services:
+  ai_cu:
+    container_name: ai_cu_sever
+    build: ./
+    image: ai_cu_server
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 8080:8080
+    environment:
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+
+    networks:
+      - server_network
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - server_network
+    depends_on:
+      - ai_cu
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email pompom231245@gmail.com -d ai-cu.paxrelpax.com --agree-tos
+    networks:
+      - server_network
+    depends_on:
+      - ai_cu
