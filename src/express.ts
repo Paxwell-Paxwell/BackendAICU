@@ -14,7 +14,13 @@ const app = express();
 async function startServer() {
   await mongoose.connect(process.env.DATABASE_URL || '')
   const PORT = Number(process.env.PORT || 3000)
-  app.use(cors());
+  app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*'); //หรือใส่แค่เฉพาะ domain ที่ต้องการได้
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+  });
   app.use(express.urlencoded({ extended: false }))
   app.use(express.json());
 
