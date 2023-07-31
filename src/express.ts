@@ -14,7 +14,14 @@ const app = express();
 async function startServer() {
   await mongoose.connect(process.env.DATABASE_URL || '')
   const PORT = Number(process.env.PORT || 3000)
-  app.use(cors())
+
+  app.use(cors({
+    origin: 'https://ai-pre.paxrelpax.com', // Replace with the origin of the request
+    methods: 'GET, POST, PUT, DELETE',
+    allowedHeaders: 'Content-Type',
+    credentials: true,
+  }));
+
   app.use(express.urlencoded({ extended: false }))
   app.use(express.json());
 
