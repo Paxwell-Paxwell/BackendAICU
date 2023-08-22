@@ -45,8 +45,8 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email pompom231245@gmail.com -d ai-cu.paxrelpax.com --agree-tos
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email pompom231245@gmail.com -d api.paxrelpax.com --agree-tos
     networks:
       - server_network
-    depends_on:
-      - ai_cu
+    # depends_on:
+      # - ai_cu

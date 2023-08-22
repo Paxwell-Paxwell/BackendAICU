@@ -13,16 +13,24 @@ interface paramtype{
 }
 export const getdata:RequestHandler<paramtype,ResponseBody<Prediction>> =async (req, res) => {
     const {building_id,frequency} = req.params;
+    const {_limit} = req.query;
     try {
         // console.log("start")
         const start = Date.now();
-        const arr = await prediction.find({building_id:building_id,frequency:frequency}).sort({date:"asc"});
+        let arr:Prediction[] ;
+        if (_limit){
+            arr = await prediction.find({building_id:building_id,frequency:frequency}).sort({date:"asc"}).limit(parseInt(_limit.toString()));
+        }
+        else{
+            arr = await prediction.find({building_id:building_id,frequency:frequency}).sort({date:"asc"});
+        }
         const response = Date.now()-start;
         // console.log("finish")
         res.send({
             response: response.toString(),
             data:arr,
             error:""
+            
         })
     }
     catch (err:unknown) {

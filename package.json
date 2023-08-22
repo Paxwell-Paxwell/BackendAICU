@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev src/express.ts",
-    "vercel-build": "echo hello"
+    "dev": "ts-node-dev src/express.ts"
   },
   "author": "",
   "license": "ISC",
