@@ -1,3 +1,5 @@
 /node_modules
 .env
 /certbot
+.DS_Store
+```
